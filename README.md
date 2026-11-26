@@ -22,10 +22,11 @@ as single source files.
 
 ## Requirements
 
-**To run:** Windows 7 or later. The executable has no dependencies beyond
-standard Windows system DLLs (the C++ runtime is linked statically). The code
-itself is restricted to the Windows XP API set; per-monitor DPI functions are
-loaded at runtime when available, with a fallback for older systems.
+**To run:** Windows 7 or later (Vista likely works but is untested). No
+installs needed. The C++ runtime is built into the executable.
+
+The source sticks to Windows XP-era APIs, so an XP build is possible with an
+XP-capable toolset (e.g. VS2017 `v141_xp`), but that isn't tested.
 
 **To build:**
 
