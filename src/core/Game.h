@@ -39,6 +39,8 @@ public:
     virtual bool CanPickUp(int pile, int index) const = 0;
     virtual bool CanDrop(int from, int index, int to) const = 0;
     virtual bool IsWon() const = 0;
+    // True when no moves remain in a game that ends by getting stuck (not by winning).
+    virtual bool IsLost() const { return false; }
 
     // Single click that isn't a drag (e.g. the stock). index may be kHitSlot.
     // Returns true if the game state changed.
@@ -51,6 +53,8 @@ public:
     virtual bool CanAutoComplete() const { return false; }
     // Optional glyph drawn on an empty pile's slot (e.g. recycle mark on the stock).
     virtual std::wstring SlotHint(int pile) const { (void)pile; return {}; }
+    // False for click-only games: cards can't be dragged.
+    virtual bool AllowDrag() const { return true; }
 
     // ---- Options ----------------------------------------------------------
     virtual bool HasOptions() const { return false; }
@@ -79,6 +83,8 @@ protected:
 
     // Snapshot state before a change. Also marks the game as started.
     void PushUndo();
+    // Forget undo history (e.g. after revealing hidden information).
+    void ClearUndo() { undo_.clear(); }
     void MoveCards(int from, int index, int to);
     bool IsKind(int pile, PileKind kind) const { return piles_[pile].kind == kind; }
 

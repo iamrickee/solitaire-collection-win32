@@ -13,6 +13,8 @@ public:
     // Custom suit mix, e.g. Spider one-suit: Deck(8, {Suit::Spades}) = 8 x 13 spades.
     Deck(int suitSets, std::initializer_list<Suit> suits);
 
+    // Adds jokers, alternating red and black. Call before Shuffle.
+    void AddJokers(int count);
     void Shuffle(uint32_t seed);
     Card Draw(bool faceUp = false);
 

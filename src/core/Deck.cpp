@@ -11,6 +11,11 @@ Deck::Deck(int suitSets, std::initializer_list<Suit> suits) {
                 cards_.push_back(Card{s, static_cast<uint8_t>(r), false});
 }
 
+void Deck::AddJokers(int count) {
+    for (int i = 0; i < count; ++i)
+        cards_.push_back(Card{i % 2 == 0 ? Suit::Hearts : Suit::Spades, static_cast<uint8_t>(kJoker), false});
+}
+
 void Deck::Shuffle(uint32_t seed) {
     std::mt19937 rng(seed);
     std::shuffle(cards_.begin(), cards_.end(), rng);

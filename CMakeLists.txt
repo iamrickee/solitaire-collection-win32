@@ -17,6 +17,7 @@ add_executable(Solitaire WIN32
     src/core/Pile.cpp
     src/core/Settings.cpp
     src/games/Klondike.cpp
+    src/games/Things.cpp
     res/app.rc
     res/app.manifest
 )

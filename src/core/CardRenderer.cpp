@@ -5,6 +5,7 @@ namespace {
 // Sheet layout (see tools/make_cardsheet.ps1).
 constexpr int kBackCol = 13, kBackRow = 0;
 constexpr int kEmptyCol = 13, kEmptyRow = 1;
+constexpr int kJokerCol = 13, kRedJokerRow = 2, kBlackJokerRow = 3;
 
 // Kenney palette, as 0x00RRGGBB.
 constexpr uint32_t kKey = 0xFF00FF;        // transparent
@@ -148,8 +149,9 @@ void CardRenderer::DrawCell(HDC dc, int col, int row, int x, int y) const {
 }
 
 void CardRenderer::DrawCard(HDC dc, const Card& card, int x, int y) const {
-    if (card.faceUp) DrawCell(dc, card.rank - 1, static_cast<int>(card.suit), x, y);
-    else DrawCell(dc, kBackCol, kBackRow, x, y);
+    if (!card.faceUp) DrawCell(dc, kBackCol, kBackRow, x, y);
+    else if (card.IsJoker()) DrawCell(dc, kJokerCol, card.IsRed() ? kRedJokerRow : kBlackJokerRow, x, y);
+    else DrawCell(dc, card.rank - 1, static_cast<int>(card.suit), x, y);
 }
 
 void CardRenderer::DrawSlot(HDC dc, const RECT& r, COLORREF background, const std::wstring& hint) const {

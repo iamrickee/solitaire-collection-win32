@@ -305,11 +305,12 @@ void App::AfterChange() {
     UpdateStatus();
     InvalidateRect(hwnd_, nullptr, FALSE);
 
-    if (game_->IsWon() && !game_->Ended()) {
+    const bool won = game_->IsWon(), lost = !won && game_->IsLost();
+    if ((won || lost) && !game_->Ended()) {
         const bool best = game_->End();
         UpdateStatus();
         UpdateWindow(hwnd_);
-        std::wstring text = L"You won!\n\n" + game_->ScoreText();
+        std::wstring text = (won ? L"You won!\n\n" : L"Game over! No moves left.\n\n") + game_->ScoreText();
         if (best) text += L"\nNew high score!";
         text += L"\n\nDeal again?";
         if (MessageBoxW(hwnd_, text.c_str(), game_->Name().c_str(), MB_YESNO | MB_ICONINFORMATION) == IDYES)
@@ -455,7 +456,7 @@ void App::OnLButtonDown(POINT pt) {
     press_.pile = pile;
     press_.index = index;
     press_.start = pt;
-    press_.canDrag = index >= 0 && game_->CanPickUp(pile, index);
+    press_.canDrag = index >= 0 && game_->AllowDrag() && game_->CanPickUp(pile, index);
     SetCapture(hwnd_);
 }
 
@@ -556,9 +557,9 @@ void App::OnLButtonDblClk(POINT pt) {
         if (game_->Click(pile, index)) AfterChange();
         return;
     }
-    if (index < 0) return;
-    const int target = game_->DoubleClickTarget(pile, index);
+    const int target = index >= 0 ? game_->DoubleClickTarget(pile, index) : -1;
     if (target >= 0) StartAutoMove(pile, target, false);
+    else HandleClick(pile, index);   // no double-click action: treat it as a second click
 }
 
 // Capture was taken away mid-press (e.g. alt-tab). Not called for our own
