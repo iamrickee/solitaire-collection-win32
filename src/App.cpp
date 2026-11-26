@@ -16,6 +16,28 @@ constexpr UINT_PTR kAnimTimer = 1;
 constexpr int kSnapBackMs = 150;
 constexpr int kAutoMoveMs = 110;
 
+#ifndef WM_DPICHANGED
+#define WM_DPICHANGED 0x02E0
+#endif
+
+// Per-monitor DPI functions exist only on Windows 10 1607+. Look them up at
+// runtime and fall back to the system DPI so the exe still runs on older Windows.
+UINT WindowDpi(HWND hwnd) {
+    using Fn = UINT(WINAPI*)(HWND);
+    static const Fn fn = reinterpret_cast<Fn>(GetProcAddress(GetModuleHandleW(L"user32.dll"), "GetDpiForWindow"));
+    if (fn) return fn(hwnd);
+    HDC dc = GetDC(nullptr);
+    const int dpi = GetDeviceCaps(dc, LOGPIXELSY);
+    ReleaseDC(nullptr, dc);
+    return dpi > 0 ? static_cast<UINT>(dpi) : 96;
+}
+
+BOOL AdjustWindowRectForDpi(RECT* r, DWORD style, BOOL menu, DWORD exStyle, UINT dpi) {
+    using Fn = BOOL(WINAPI*)(RECT*, DWORD, BOOL, DWORD, UINT);
+    static const Fn fn = reinterpret_cast<Fn>(GetProcAddress(GetModuleHandleW(L"user32.dll"), "AdjustWindowRectExForDpi"));
+    return fn ? fn(r, style, menu, exStyle, dpi) : AdjustWindowRectEx(r, style, menu, exStyle);
+}
+
 uint32_t RandomDeal() {
     static std::random_device rd;
     return rd() % 1000000 + 1;
@@ -86,7 +108,7 @@ bool App::Init(HINSTANCE inst, int showCmd, uint32_t firstDeal) {
 
     // Size the window for the largest card scale (up to 3x per 96 DPI) that
     // fits comfortably on the monitor.
-    const UINT dpi = GetDpiForWindow(hwnd_);
+    const UINT dpi = WindowDpi(hwnd_);
     MONITORINFO mi{sizeof(mi)};
     GetMonitorInfoW(MonitorFromWindow(hwnd_, MONITOR_DEFAULTTONEAREST), &mi);
     const int workW = mi.rcWork.right - mi.rcWork.left, workH = mi.rcWork.bottom - mi.rcWork.top;
@@ -96,7 +118,7 @@ bool App::Init(HINSTANCE inst, int showCmd, uint32_t firstDeal) {
     for (int scale = std::max(1, MulDiv(3, dpi, 96)); scale >= 1; --scale) {
         r = {0, 0, int(std::ceil(game_->LayoutWidth() * CardRenderer::kArtW * scale)),
              int(std::ceil(game_->LayoutHeight() * CardRenderer::kArtH * scale)) + (sb.bottom - sb.top)};
-        AdjustWindowRectExForDpi(&r, WS_OVERLAPPEDWINDOW, TRUE, 0, dpi);
+        AdjustWindowRectForDpi(&r, WS_OVERLAPPEDWINDOW, TRUE, 0, dpi);
         if (r.right - r.left <= workW * 9 / 10 && r.bottom - r.top <= workH * 9 / 10) break;
     }
     SetWindowPos(hwnd_, nullptr, mi.rcWork.left + (workW - (r.right - r.left)) / 2,
@@ -320,7 +342,7 @@ void App::UpdateLayout() {
     game_->Layout(board_, cards_.CardW(), cards_.CardH(), scale);
 
     if (status_) {
-        const UINT dpi = GetDpiForWindow(hwnd_);
+        const UINT dpi = WindowDpi(hwnd_);
         int parts[3] = {MulDiv(260, dpi, 96), std::max(MulDiv(520, dpi, 96), int(client.right) - MulDiv(140, dpi, 96)), -1};
         SendMessageW(status_, SB_SETPARTS, 3, reinterpret_cast<LPARAM>(parts));
     }
@@ -565,7 +587,7 @@ void App::StartSlide(POINT to, int target, bool chain, int ms) {
     slide_.active = true;
     slide_.from = lifted_.pos;
     slide_.to = to;
-    slide_.start = GetTickCount64();
+    slide_.start = GetTickCount();
     slide_.ms = ms;
     slide_.target = target;
     slide_.chain = chain;
@@ -577,7 +599,7 @@ void App::OnTimer() {
         KillTimer(hwnd_, kAnimTimer);
         return;
     }
-    const double t = std::min(1.0, double(GetTickCount64() - slide_.start) / slide_.ms);
+    const double t = std::min(1.0, double(GetTickCount() - slide_.start) / slide_.ms);
     const double e = 1.0 - (1.0 - t) * (1.0 - t);   // ease-out
     lifted_.pos = {LONG(slide_.from.x + (slide_.to.x - slide_.from.x) * e),
                    LONG(slide_.from.y + (slide_.to.y - slide_.from.y) * e)};

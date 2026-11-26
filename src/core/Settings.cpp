@@ -8,10 +8,9 @@ constexpr wchar_t kScoreSection[] = L"HighScores";
 }
 
 Settings::Settings() {
-    PWSTR appData = nullptr;
-    if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_RoamingAppData, 0, nullptr, &appData))) {
+    wchar_t appData[MAX_PATH];
+    if (SUCCEEDED(SHGetFolderPathW(nullptr, CSIDL_APPDATA | CSIDL_FLAG_CREATE, nullptr, 0, appData))) {
         std::wstring dir = std::wstring(appData) + L"\\Solitaire";
-        CoTaskMemFree(appData);
         CreateDirectoryW(dir.c_str(), nullptr);
         path_ = dir + L"\\solitaire.ini";
     } else {

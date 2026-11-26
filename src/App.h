@@ -96,7 +96,7 @@ private:
     struct Slide {
         bool active = false;
         POINT from{}, to{};
-        ULONGLONG start = 0;
+        DWORD start = 0;
         int ms = 0;
         int target = -1;     // pile to move to when done, or -1 to just drop back
         bool chain = false;  // keep auto-playing to foundations afterwards

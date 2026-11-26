@@ -22,7 +22,13 @@ as single source files.
 
 ## Requirements
 
-- Windows 10 or 11
+**To run:** Windows 7 or later. The executable has no dependencies beyond
+standard Windows system DLLs (the C++ runtime is linked statically). The code
+itself is restricted to the Windows XP API set; per-monitor DPI functions are
+loaded at runtime when available, with a fallback for older systems.
+
+**To build:**
+
 - [Visual Studio 2022](https://visualstudio.microsoft.com/downloads/) or the
   free *Build Tools for Visual Studio 2022*, with the **Desktop development
   with C++** workload (this includes MSVC, the Windows SDK, CMake and Ninja)
