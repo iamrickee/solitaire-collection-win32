@@ -29,5 +29,6 @@ target_compile_definitions(Solitaire PRIVATE
 target_compile_options(Solitaire PRIVATE /W4 /permissive- /utf-8)
 target_link_libraries(Solitaire PRIVATE comctl32 comdlg32 msimg32 shell32)
 
-# The .rc references cards.bmp; rebuild resources when it changes.
-set_source_files_properties(res/app.rc PROPERTIES OBJECT_DEPENDS ${CMAKE_SOURCE_DIR}/res/cards.bmp)
+# The .rc references these files; rebuild resources when they change.
+set_source_files_properties(res/app.rc PROPERTIES OBJECT_DEPENDS
+    "${CMAKE_SOURCE_DIR}/res/cards.bmp;${CMAKE_SOURCE_DIR}/res/app.ico")

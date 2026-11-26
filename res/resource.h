@@ -1,6 +1,7 @@
 #pragma once
 
 // Bitmaps / icons / menus / accelerators
+#define IDI_APP                 100     // lowest icon ID = the exe's icon in Explorer
 #define IDB_CARDS               101
 #define IDR_MAINMENU            102
 #define IDR_ACCEL               103

@@ -79,7 +79,10 @@ bool App::Init(HINSTANCE inst, int showCmd, uint32_t firstDeal) {
     wc.lpfnWndProc = WndProc;
     wc.hInstance = inst;
     wc.hCursor = LoadCursorW(nullptr, IDC_ARROW);
-    wc.hIcon = LoadIconW(nullptr, IDI_APPLICATION);
+    wc.hIcon = static_cast<HICON>(LoadImageW(inst, MAKEINTRESOURCEW(IDI_APP), IMAGE_ICON,
+                                             GetSystemMetrics(SM_CXICON), GetSystemMetrics(SM_CYICON), 0));
+    wc.hIconSm = static_cast<HICON>(LoadImageW(inst, MAKEINTRESOURCEW(IDI_APP), IMAGE_ICON,
+                                               GetSystemMetrics(SM_CXSMICON), GetSystemMetrics(SM_CYSMICON), 0));
     wc.lpszMenuName = MAKEINTRESOURCEW(IDR_MAINMENU);
     wc.lpszClassName = kClassName;
     RegisterClassExW(&wc);
