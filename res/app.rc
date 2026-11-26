@@ -1,0 +1,96 @@
+#include <windows.h>
+#include "resource.h"
+
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+
+IDB_CARDS BITMAP "cards.bmp"
+
+IDR_MAINMENU MENU
+BEGIN
+    POPUP "&Game"
+    BEGIN
+        MENUITEM "&New Game\tF2",           IDM_NEW
+        MENUITEM "&Restart This Deal",      IDM_RESTART
+        MENUITEM SEPARATOR
+        MENUITEM "&Undo\tCtrl+Z",           IDM_UNDO
+        MENUITEM "&Auto Play\tF3",          IDM_AUTOPLAY
+        MENUITEM SEPARATOR
+        MENUITEM "&Options...\tF4",         IDM_OPTIONS
+        MENUITEM "&Settings...",            IDM_SETTINGS
+        MENUITEM "&High Scores...",         IDM_HIGHSCORES
+        MENUITEM SEPARATOR
+        MENUITEM "E&xit",                   IDM_EXIT
+    END
+    POPUP "&Games"
+    BEGIN
+        MENUITEM "(none)",                  IDM_GAMES_PLACEHOLDER
+    END
+    POPUP "&Help"
+    BEGIN
+        MENUITEM "&About Solitaire...",     IDM_ABOUT
+    END
+END
+
+IDR_ACCEL ACCELERATORS
+BEGIN
+    VK_F2,  IDM_NEW,      VIRTKEY
+    VK_F3,  IDM_AUTOPLAY, VIRTKEY
+    VK_F4,  IDM_OPTIONS,  VIRTKEY
+    "Z",    IDM_UNDO,     VIRTKEY, CONTROL
+END
+
+IDD_ABOUT DIALOGEX 0, 0, 220, 96
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About Solitaire"
+FONT 9, "Segoe UI"
+BEGIN
+    LTEXT           "Solitaire Collection", -1, 12, 10, 196, 10
+    LTEXT           "Written in C++ with the Win32 API and GDI.", -1, 12, 24, 196, 10
+    LTEXT           "Card art: Kenney Playing Cards Pack (CC0)\nwww.kenney.nl", -1, 12, 40, 196, 20
+    DEFPUSHBUTTON   "OK", IDOK, 164, 74, 48, 14
+END
+
+IDD_SETTINGS DIALOGEX 0, 0, 200, 112
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Settings"
+FONT 9, "Segoe UI"
+BEGIN
+    LTEXT           "Background color:", -1, 10, 12, 80, 10
+    CONTROL         "", IDC_BG_SWATCH, "Static", SS_SUNKEN | SS_NOTIFY, 92, 10, 30, 14
+    PUSHBUTTON      "Change...", IDC_BG_BUTTON, 130, 10, 60, 14
+    LTEXT           "Card back color:", -1, 10, 32, 80, 10
+    CONTROL         "", IDC_BACK_SWATCH, "Static", SS_SUNKEN | SS_NOTIFY, 92, 30, 30, 14
+    PUSHBUTTON      "Change...", IDC_BACK_BUTTON, 130, 30, 60, 14
+    AUTOCHECKBOX    "&Four-color deck (green clubs, blue diamonds)", IDC_FOURCOLOR, 10, 54, 180, 12
+    PUSHBUTTON      "&Defaults", IDC_DEFAULTS, 10, 90, 50, 14
+    DEFPUSHBUTTON   "OK", IDOK, 86, 90, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 140, 90, 50, 14
+END
+
+IDD_HIGHSCORES DIALOGEX 0, 0, 220, 140
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "High Scores"
+FONT 9, "Segoe UI"
+BEGIN
+    LISTBOX         IDC_SCORELIST, 10, 10, 200, 100, LBS_NOINTEGRALHEIGHT | LBS_USETABSTOPS | LBS_NOSEL | WS_VSCROLL | WS_BORDER
+    PUSHBUTTON      "&Reset", IDC_SCORERESET, 10, 118, 50, 14
+    DEFPUSHBUTTON   "OK", IDOK, 160, 118, 50, 14
+END
+
+IDD_KLONDIKE_OPTIONS DIALOGEX 0, 0, 200, 130
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Klondike Options"
+FONT 9, "Segoe UI"
+BEGIN
+    GROUPBOX        "Draw", -1, 8, 6, 86, 44
+    AUTORADIOBUTTON "Draw &one", IDC_KL_DRAW1, 16, 18, 70, 12, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "Draw &three", IDC_KL_DRAW3, 16, 32, 70, 12
+    GROUPBOX        "Scoring", -1, 104, 6, 88, 44
+    AUTORADIOBUTTON "&Standard", IDC_KL_STANDARD, 112, 18, 72, 12, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Vegas", IDC_KL_VEGAS, 112, 32, 72, 12
+    AUTOCHECKBOX    "&Cumulative Vegas bank", IDC_KL_CUMULATIVE, 10, 58, 120, 12, WS_GROUP | WS_TABSTOP
+    PUSHBUTTON      "Reset &Bank", IDC_KL_RESETBANK, 132, 56, 60, 14
+    LTEXT           "Changing options starts a new game.", -1, 10, 82, 182, 10
+    DEFPUSHBUTTON   "OK", IDOK, 88, 108, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 142, 108, 50, 14
+END
