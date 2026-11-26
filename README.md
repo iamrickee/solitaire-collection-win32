@@ -131,7 +131,11 @@ window size or appearance settings change.
 pwsh tools/make_cardsheet.ps1 -PackDir <path to extracted Kenney Playing Cards Pack>
 ```
 
-## Credits
+## License
 
-Card art: [Playing Cards Pack](https://kenney.nl/assets/playing-cards-pack) by
-Kenney (www.kenney.nl), released under CC0. See `res/Kenney-License.txt`.
+The source code is released under the [MIT License](LICENSE).
+
+The card art in `res/cards.bmp` is derived from the
+[Playing Cards Pack](https://kenney.nl/assets/playing-cards-pack) by Kenney
+(www.kenney.nl), released under CC0 (public domain). See
+`res/Kenney-License.txt`.
