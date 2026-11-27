@@ -21,6 +21,7 @@ add_executable(Solitaire WIN32
     src/games/FortyThieves.cpp
     src/games/FreeCell.cpp
     src/games/KingsCorners.cpp
+    src/games/LaBelleLucie.cpp
     src/games/Klondike.cpp
     src/games/Pyramid.cpp
     src/games/Scorpion.cpp
