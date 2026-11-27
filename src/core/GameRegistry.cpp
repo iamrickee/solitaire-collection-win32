@@ -2,6 +2,7 @@
 #include "../games/FreeCell.h"
 #include "../games/KingsCorners.h"
 #include "../games/Klondike.h"
+#include "../games/Pyramid.h"
 #include "../games/Spider.h"
 #include "../games/Things.h"
 
@@ -15,6 +16,7 @@ const std::vector<GameInfo>& AllGames() {
         {L"Klondike", &Make<Klondike>},
         {L"FreeCell", &Make<FreeCell>},
         {L"Kings Corners", &Make<KingsCorners>},
+        {L"Pyramid", &Make<Pyramid>},
         {L"Spider", &Make<Spider>},
         {L"Things", &Make<Things>},
     };

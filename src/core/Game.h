@@ -53,6 +53,8 @@ public:
     virtual bool CanAutoComplete() const { return false; }
     // Optional glyph drawn on an empty pile's slot (e.g. recycle mark on the stock).
     virtual std::wstring SlotHint(int pile) const { (void)pile; return {}; }
+    // False for piles that vanish when empty (no slot outline, no hit target).
+    virtual bool ShowSlot(int pile) const { (void)pile; return true; }
     // False for click-only games: cards can't be dragged.
     virtual bool AllowDrag() const { return true; }
 

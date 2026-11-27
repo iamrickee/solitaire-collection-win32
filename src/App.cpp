@@ -408,7 +408,7 @@ void App::Paint(HDC dc) {
         const Pile& pile = piles[p];
         const int limit = (lifted_.active && lifted_.pile == p) ? lifted_.index : pile.Count();
         if (limit == 0) {
-            cards_.DrawSlot(backDC_, pile.SlotRect(), bg, game_->SlotHint(p));
+            if (game_->ShowSlot(p)) cards_.DrawSlot(backDC_, pile.SlotRect(), bg, game_->SlotHint(p));
             continue;
         }
         // Unfanned piles only show their top card.
@@ -451,6 +451,7 @@ void App::Paint(HDC dc) {
 bool App::HitTest(POINT pt, int& pile, int& index) const {
     const auto& piles = game_->Piles();
     for (int p = static_cast<int>(piles.size()) - 1; p >= 0; --p) {
+        if (piles[p].Empty() && !game_->ShowSlot(p)) continue;
         int i = piles[p].HitTest(pt);
         if (i != kHitNone) {
             pile = p;
