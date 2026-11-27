@@ -16,6 +16,7 @@ add_executable(Solitaire WIN32
     src/core/GameRegistry.cpp
     src/core/Pile.cpp
     src/core/Settings.cpp
+    src/games/FreeCell.cpp
     src/games/KingsCorners.cpp
     src/games/Klondike.cpp
     src/games/Spider.cpp

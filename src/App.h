@@ -21,6 +21,7 @@ private:
 
     // Game management
     void SelectGame(int index, uint32_t deal = 0);
+    void FitWindow(bool centerOnMonitor);
     void NewDeal(bool sameSeed);
     void AfterChange();
     void FinishCurrentGame();

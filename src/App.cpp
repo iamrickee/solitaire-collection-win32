@@ -108,13 +108,24 @@ bool App::Init(HINSTANCE inst, int showCmd, uint32_t firstDeal) {
     for (size_t i = 0; i < all.size(); ++i)
         if (last == all[i].name) index = static_cast<int>(i);
     SelectGame(index, firstDeal);
+    FitWindow(true);
 
-    // Size the window for the largest card scale (up to 3x per 96 DPI) that
-    // fits comfortably on the monitor.
+    ShowWindow(hwnd_, showCmd);
+    UpdateWindow(hwnd_);
+    return true;
+}
+
+// Size the window for the largest card scale (up to 3x per 96 DPI) at which
+// the current game fits comfortably on the monitor. Games differ in shape, so
+// this runs on every game switch too. On startup the window is centred on the
+// monitor; afterwards it keeps its centre (pulled back on screen if needed).
+void App::FitWindow(bool centerOnMonitor) {
+    if (IsZoomed(hwnd_) || IsIconic(hwnd_)) return;   // leave a maximized window alone
     const UINT dpi = WindowDpi(hwnd_);
     MONITORINFO mi{sizeof(mi)};
     GetMonitorInfoW(MonitorFromWindow(hwnd_, MONITOR_DEFAULTTONEAREST), &mi);
-    const int workW = mi.rcWork.right - mi.rcWork.left, workH = mi.rcWork.bottom - mi.rcWork.top;
+    const RECT& work = mi.rcWork;
+    const int workW = work.right - work.left, workH = work.bottom - work.top;
     RECT sb;
     GetWindowRect(status_, &sb);
     RECT r{};
@@ -124,13 +135,17 @@ bool App::Init(HINSTANCE inst, int showCmd, uint32_t firstDeal) {
         AdjustWindowRectForDpi(&r, WS_OVERLAPPEDWINDOW, TRUE, 0, dpi);
         if (r.right - r.left <= workW * 9 / 10 && r.bottom - r.top <= workH * 9 / 10) break;
     }
-    SetWindowPos(hwnd_, nullptr, mi.rcWork.left + (workW - (r.right - r.left)) / 2,
-                 mi.rcWork.top + (workH - (r.bottom - r.top)) / 2, r.right - r.left, r.bottom - r.top,
-                 SWP_NOZORDER);
-
-    ShowWindow(hwnd_, showCmd);
-    UpdateWindow(hwnd_);
-    return true;
+    const int w = r.right - r.left, h = r.bottom - r.top;
+    int cx = work.left + workW / 2, cy = work.top + workH / 2;
+    if (!centerOnMonitor) {
+        RECT cur;
+        GetWindowRect(hwnd_, &cur);
+        cx = (cur.left + cur.right) / 2;
+        cy = (cur.top + cur.bottom) / 2;
+    }
+    const int x = std::clamp(cx - w / 2, int(work.left), std::max(int(work.left), int(work.right) - w));
+    const int y = std::clamp(cy - h / 2, int(work.top), std::max(int(work.top), int(work.bottom) - h));
+    SetWindowPos(hwnd_, nullptr, x, y, w, h, SWP_NOZORDER | SWP_NOACTIVATE);
 }
 
 int App::Run() {
@@ -220,6 +235,7 @@ void App::OnCommand(int id) {
     if (id >= IDM_GAME_FIRST && id < IDM_GAME_FIRST + static_cast<int>(AllGames().size())) {
         if (Busy()) return;
         SelectGame(id - IDM_GAME_FIRST);
+        FitWindow(false);
         return;
     }
     switch (id) {
