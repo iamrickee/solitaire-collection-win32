@@ -17,6 +17,7 @@ add_executable(Solitaire WIN32
     src/core/Pile.cpp
     src/core/Settings.cpp
     src/games/BakersDozen.cpp
+    src/games/BeleagueredCastle.cpp
     src/games/FortyThieves.cpp
     src/games/FreeCell.cpp
     src/games/KingsCorners.cpp
