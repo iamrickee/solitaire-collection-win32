@@ -5,6 +5,7 @@
 #include "../games/Pyramid.h"
 #include "../games/Spider.h"
 #include "../games/Things.h"
+#include "../games/TriPeaks.h"
 #include "../games/Yukon.h"
 
 namespace {
@@ -20,6 +21,7 @@ const std::vector<GameInfo>& AllGames() {
         {L"Pyramid", &Make<Pyramid>},
         {L"Spider", &Make<Spider>},
         {L"Things", &Make<Things>},
+        {L"TriPeaks", &Make<TriPeaks>},
         {L"Yukon", &Make<Yukon>},
     };
     return games;
