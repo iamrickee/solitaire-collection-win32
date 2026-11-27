@@ -5,6 +5,7 @@
 #include "../games/Pyramid.h"
 #include "../games/Spider.h"
 #include "../games/Things.h"
+#include "../games/Yukon.h"
 
 namespace {
 template <class T>
@@ -19,6 +20,7 @@ const std::vector<GameInfo>& AllGames() {
         {L"Pyramid", &Make<Pyramid>},
         {L"Spider", &Make<Spider>},
         {L"Things", &Make<Things>},
+        {L"Yukon", &Make<Yukon>},
     };
     return games;
 }
