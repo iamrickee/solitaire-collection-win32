@@ -24,6 +24,7 @@ add_executable(Solitaire WIN32
     src/games/Pyramid.cpp
     src/games/Scorpion.cpp
     src/games/Spider.cpp
+    src/games/Spiderette.cpp
     src/games/Things.cpp
     src/games/TriPeaks.cpp
     src/games/Yukon.cpp

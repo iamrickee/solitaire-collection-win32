@@ -7,6 +7,7 @@
 #include "../games/Pyramid.h"
 #include "../games/Scorpion.h"
 #include "../games/Spider.h"
+#include "../games/Spiderette.h"
 #include "../games/Things.h"
 #include "../games/TriPeaks.h"
 #include "../games/Yukon.h"
@@ -26,6 +27,7 @@ const std::vector<GameInfo>& AllGames() {
         {L"Pyramid", &Make<Pyramid>},
         {L"Scorpion", &Make<Scorpion>},
         {L"Spider", &Make<Spider>},
+        {L"Spiderette", &Make<Spiderette>},
         {L"Things", &Make<Things>},
         {L"TriPeaks", &Make<TriPeaks>},
         {L"Yukon", &Make<Yukon>},
