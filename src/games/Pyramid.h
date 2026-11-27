@@ -25,6 +25,7 @@ public:
     int DoubleClickTarget(int pile, int index) const override { (void)pile; (void)index; return -1; }
     std::wstring SlotHint(int pile) const override;
     bool ShowSlot(int pile) const override { return pile < kCell0; }
+    bool AllowDrag() const override { return false; }
 
 protected:
     void Deal(uint32_t seed) override;
