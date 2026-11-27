@@ -4,14 +4,15 @@
 namespace {
 // Sheet layout (see tools/make_cardsheet.ps1).
 constexpr int kBackCol = 13, kBackRow = 0;
-constexpr int kEmptyCol = 13, kEmptyRow = 1;
 constexpr int kJokerCol = 13, kRedJokerRow = 2, kBlackJokerRow = 3;
 
-// Kenney palette, as 0x00RRGGBB.
-constexpr uint32_t kKey = 0xFF00FF;        // transparent
-constexpr uint32_t kInk = 0x4D5766;        // outline + black suits
-constexpr uint32_t kRed = 0xF52C4E;
-constexpr uint32_t kBackTint = 0xC7D7EC;   // light blue on the card back
+// Deck palette (Windows 16 colors), as 0x00RRGGBB.
+constexpr uint32_t kInk = 0x000000;        // outline + black suits
+constexpr uint32_t kRed = 0xFF0000;        // red suits + the back's plaid
+
+// Corner index of a face card (top left; the bottom-right one is its mirror).
+// 4-color recolors only here on J/Q/K so the figure art keeps its colors.
+constexpr int kIndexX0 = 2, kIndexX1 = 10, kIndexY0 = 2, kIndexY1 = 30;
 
 // Four-color deck replacements.
 constexpr uint32_t kClubGreen = 0x1E9E4A;
@@ -78,31 +79,30 @@ void CardRenderer::Configure(int scale, bool fourColor, COLORREF backColor) {
     auto at = [&](int col, int row, int x, int y) -> uint32_t& {
         return px[size_t(row * kArtH + y) * baseW_ + col * kArtW + x];
     };
-    auto emptyAt = [&](int x, int y) {
-        return base_[size_t(kEmptyRow * kArtH + y) * baseW_ + kEmptyCol * kArtW + x];
-    };
-
+    // Card back: the plaid's red lines take the chosen color.
     const uint32_t tint = ToRGB(backColor);
-    for (int y = 0; y < kArtH; ++y) {
-        // Only tint inside the card outline (the corners hold stray light-blue pixels).
-        int first = kArtW, last = -1;
-        for (int x = 0; x < kArtW; ++x)
-            if (emptyAt(x, y) == kInk) { first = std::min(first, x); last = x; }
-        for (int x = first + 1; x < last; ++x) {
+    for (int y = 0; y < kArtH; ++y)
+        for (int x = 0; x < kArtW; ++x) {
             uint32_t& p = at(kBackCol, kBackRow, x, y);
-            if (p != kBackTint) continue;
-            // Pixels touching the outline are corner rounding, not the panel.
-            p = (x == first + 1 || x == last - 1) ? 0xFFFFFF : tint;
+            if (p == kRed) p = tint;
         }
-    }
 
     if (fourColor) {
+        // Inside the outline: pips and index on A-10, just the index on J/Q/K.
+        auto recolor = [&](int col, int x, int y) {
+            if (x < 2 || y < 2 || x > kArtW - 3 || y > kArtH - 3) return false;   // outline
+            if (col < 10) return true;
+            const bool tl = x >= kIndexX0 && x <= kIndexX1 && y >= kIndexY0 && y <= kIndexY1;
+            const int mx = kArtW - 1 - x, my = kArtH - 1 - y;
+            const bool br = mx >= kIndexX0 && mx <= kIndexX1 && my >= kIndexY0 && my <= kIndexY1;
+            return tl || br;
+        };
         for (int col = 0; col < 13; ++col) {
             for (int y = 0; y < kArtH; ++y) {
                 for (int x = 0; x < kArtW; ++x) {
-                    // Clubs: ink pixels that aren't part of the card outline.
+                    if (!recolor(col, x, y)) continue;
                     uint32_t& c = at(col, static_cast<int>(Suit::Clubs), x, y);
-                    if (c == kInk && emptyAt(x, y) != kInk) c = kClubGreen;
+                    if (c == kInk) c = kClubGreen;
                     uint32_t& d = at(col, static_cast<int>(Suit::Diamonds), x, y);
                     if (d == kRed) d = kDiamondBlue;
                 }
@@ -160,7 +160,7 @@ void CardRenderer::DrawSlot(HDC dc, const RECT& r, COLORREF background, const st
     HGDIOBJ oldPen = SelectObject(dc, pen);
     HGDIOBJ oldBrush = SelectObject(dc, GetStockObject(NULL_BRUSH));
     const int inset = scale_ / 2;
-    const int round = 6 * scale_;
+    const int round = 4 * scale_;
     RoundRect(dc, r.left + inset, r.top + inset, r.right - inset, r.bottom - inset, round, round);
     SelectObject(dc, oldBrush);
     SelectObject(dc, oldPen);

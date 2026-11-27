@@ -6,6 +6,15 @@
 enum class PileKind { Stock, Waste, Foundation, Tableau, Cell };
 enum class Fan { None, Down, Right };
 
+// Table spacing in card-art pixels (games multiply by the layout `unit`).
+// Cards are 71x96; the corner index (rank over suit) spans rows 5-28.
+namespace Art {
+constexpr int kGap = 10;       // between piles
+constexpr int kFanDown = 6;    // step after a face-down card
+constexpr int kFanUp = 30;     // step after a face-up card: shows rank and suit
+constexpr int kFanRight = 14;  // sideways step (draw-3 waste): shows the index
+}
+
 // Hit-test results besides a card index.
 constexpr int kHitNone = -2;   // point is not on this pile
 constexpr int kHitSlot = -1;   // point is on the empty pile's base slot

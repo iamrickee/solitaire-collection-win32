@@ -9,7 +9,7 @@
 class Settings {
 public:
     static constexpr COLORREF kDefaultBackground = RGB(0x2E, 0x7D, 0x4F);   // felt green
-    static constexpr COLORREF kDefaultCardBack = RGB(0xC7, 0xD7, 0xEC);     // Kenney's own back color
+    static constexpr COLORREF kDefaultCardBack = RGB(0xFF, 0x00, 0x00);     // the deck's own red plaid
 
     Settings();
 

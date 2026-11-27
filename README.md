@@ -132,17 +132,18 @@ window size or appearance settings change.
 
 ### Regenerating the card sheet
 
-`res/cards.bmp` is checked in. To rebuild it from the original art pack:
+`res/cards.bmp` is checked in. To rebuild it from the original sheet
+(`res/95ishdeck.gif`), which also draws the jokers:
 
 ```powershell
-pwsh tools/make_cardsheet.ps1 -PackDir <path to extracted Kenney Playing Cards Pack>
+pwsh tools/make_cardsheet.ps1
 ```
 
 ## License
 
 The source code is released under the [MIT License](LICENSE).
 
-The card art in `res/cards.bmp` is derived from the
-[Playing Cards Pack](https://kenney.nl/assets/playing-cards-pack) by Kenney
-(www.kenney.nl), released under CC0 (public domain). See
-`res/Kenney-License.txt`.
+The card art in `res/cards.bmp` is derived from
+[PC-style playing cards](https://opengameart.org/content/pc-style-playing-cards)
+by devurandom, released under CC0 (public domain). The jokers are original to
+this project.

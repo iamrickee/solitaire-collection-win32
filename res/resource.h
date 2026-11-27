@@ -11,6 +11,7 @@
 #define IDD_SETTINGS            201
 #define IDD_HIGHSCORES          202
 #define IDD_KLONDIKE_OPTIONS    210
+#define IDD_SPIDER_OPTIONS      211
 
 // Settings dialog controls
 #define IDC_BG_BUTTON           1001
@@ -31,6 +32,11 @@
 #define IDC_KL_VEGAS            1204
 #define IDC_KL_CUMULATIVE       1205
 #define IDC_KL_RESETBANK        1206
+
+// Spider options controls
+#define IDC_SP_SUIT1            1301
+#define IDC_SP_SUIT2            1302
+#define IDC_SP_SUIT4            1303
 // Menu commands
 #define IDM_NEW                 40001
 #define IDM_RESTART             40002

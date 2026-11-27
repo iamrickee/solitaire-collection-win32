@@ -24,7 +24,7 @@ std::wstring Things::ScoreText() const {
 }
 
 void Things::Layout(const RECT& area, int cardW, int cardH, int unit) {
-    const int gap = 6 * unit;
+    const int gap = Art::kGap * unit;
     const int totalW = kColumns * cardW + (kColumns - 1) * gap;
     const int left = area.left + std::max(gap, (int(area.right - area.left) - totalW) / 2);
     const int top = area.top + gap;
@@ -32,8 +32,8 @@ void Things::Layout(const RECT& area, int cardW, int cardH, int unit) {
     for (Pile& p : piles_) {
         p.cardW = cardW;
         p.cardH = cardH;
-        p.offFaceDown = 4 * unit;
-        p.offFaceUp = 13 * unit;
+        p.offFaceDown = Art::kFanDown * unit;
+        p.offFaceUp = Art::kFanUp * unit;
     }
     // Top row: draw pile and face-up card.
     piles_[kStock].x = left;

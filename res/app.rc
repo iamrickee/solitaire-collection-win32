@@ -47,7 +47,7 @@ FONT 9, "Segoe UI"
 BEGIN
     LTEXT           "Solitaire Collection", -1, 12, 10, 196, 10
     LTEXT           "Written in C++ with the Win32 API and GDI.", -1, 12, 24, 196, 10
-    LTEXT           "Card art: Kenney Playing Cards Pack (CC0)\nwww.kenney.nl", -1, 12, 40, 196, 20
+    LTEXT           "Card art: PC-style playing cards by devurandom (CC0)\nopengameart.org", -1, 12, 40, 196, 20
     DEFPUSHBUTTON   "OK", IDOK, 164, 74, 48, 14
 END
 
@@ -94,4 +94,18 @@ BEGIN
     LTEXT           "Changing options starts a new game.", -1, 10, 82, 182, 10
     DEFPUSHBUTTON   "OK", IDOK, 88, 108, 50, 14
     PUSHBUTTON      "Cancel", IDCANCEL, 142, 108, 50, 14
+END
+
+IDD_SPIDER_OPTIONS DIALOGEX 0, 0, 160, 104
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Spider Options"
+FONT 9, "Segoe UI"
+BEGIN
+    GROUPBOX        "Difficulty", -1, 8, 6, 144, 58
+    AUTORADIOBUTTON "&One suit (easy)", IDC_SP_SUIT1, 16, 18, 128, 12, WS_GROUP | WS_TABSTOP
+    AUTORADIOBUTTON "&Two suits (medium)", IDC_SP_SUIT2, 16, 32, 128, 12
+    AUTORADIOBUTTON "&Four suits (hard)", IDC_SP_SUIT4, 16, 46, 128, 12
+    LTEXT           "Changing options starts a new game.", -1, 10, 70, 142, 10
+    DEFPUSHBUTTON   "OK", IDOK, 48, 84, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 102, 84, 50, 14
 END

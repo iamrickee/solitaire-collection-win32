@@ -58,7 +58,7 @@ std::wstring Klondike::ScoreText() const {
 }
 
 void Klondike::Layout(const RECT& area, int cardW, int cardH, int unit) {
-    const int gap = 6 * unit;
+    const int gap = Art::kGap * unit;
     const int totalW = 7 * cardW + 6 * gap;
     const int left = area.left + std::max(gap, (int(area.right - area.left) - totalW) / 2);
     const int top = area.top + gap;
@@ -67,8 +67,8 @@ void Klondike::Layout(const RECT& area, int cardW, int cardH, int unit) {
     for (Pile& p : piles_) {
         p.cardW = cardW;
         p.cardH = cardH;
-        p.offFaceDown = 4 * unit;
-        p.offFaceUp = 13 * unit;
+        p.offFaceDown = Art::kFanDown * unit;
+        p.offFaceUp = Art::kFanUp * unit;
         p.maxExtent = 0;
     }
     auto colX = [&](int c) { return left + c * (cardW + gap); };
@@ -77,7 +77,7 @@ void Klondike::Layout(const RECT& area, int cardW, int cardH, int unit) {
     piles_[kStock].y = top;
     piles_[kWaste].x = colX(1);
     piles_[kWaste].y = top;
-    piles_[kWaste].offFaceUp = 14 * unit;
+    piles_[kWaste].offFaceUp = Art::kFanRight * unit;
     for (int i = 0; i < 4; ++i) {
         piles_[kFoundation0 + i].x = colX(3 + i);
         piles_[kFoundation0 + i].y = top;

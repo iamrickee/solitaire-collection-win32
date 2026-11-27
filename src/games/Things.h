@@ -12,7 +12,7 @@ public:
     std::wstring ScoreText() const override;
 
     double LayoutWidth() const override { return 9.4; }
-    double LayoutHeight() const override { return 3.4; }
+    double LayoutHeight() const override { return 3.8; }
     void Layout(const RECT& area, int cardW, int cardH, int unit) override;
     bool AllowDrag() const override { return false; }
 

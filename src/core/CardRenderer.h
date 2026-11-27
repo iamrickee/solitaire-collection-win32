@@ -5,13 +5,14 @@
 #include <string>
 #include <vector>
 
-// Draws cards from the Kenney pixel-art sheet (res/cards.bmp).
-// The sheet is recolored (4-color deck, card-back tint) and scaled up by an
-// integer factor with nearest-neighbour sampling so the pixel art stays crisp.
+// Draws cards from the pixel-art sheet (res/cards.bmp, built by
+// tools/make_cardsheet.ps1). The sheet is recolored (4-color deck, card-back
+// tint) and scaled up by an integer factor with nearest-neighbour sampling so
+// the pixel art stays crisp.
 class CardRenderer {
 public:
-    static constexpr int kArtW = 42;   // card size in art pixels
-    static constexpr int kArtH = 60;
+    static constexpr int kArtW = 71;   // card size in art pixels
+    static constexpr int kArtH = 96;
 
     ~CardRenderer();
 
