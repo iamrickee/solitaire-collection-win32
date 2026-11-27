@@ -5,6 +5,7 @@
 #include "../games/KingsCorners.h"
 #include "../games/Klondike.h"
 #include "../games/Pyramid.h"
+#include "../games/RussianSolitaire.h"
 #include "../games/Scorpion.h"
 #include "../games/Spider.h"
 #include "../games/Spiderette.h"
@@ -25,6 +26,7 @@ const std::vector<GameInfo>& AllGames() {
         {L"Forty Thieves", &Make<FortyThieves>},
         {L"Kings Corners", &Make<KingsCorners>},
         {L"Pyramid", &Make<Pyramid>},
+        {L"Russian Solitaire", &Make<RussianSolitaire>},
         {L"Scorpion", &Make<Scorpion>},
         {L"Spider", &Make<Spider>},
         {L"Spiderette", &Make<Spiderette>},

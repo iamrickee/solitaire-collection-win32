@@ -25,6 +25,8 @@ public:
 protected:
     void Deal(uint32_t seed) override;
     void OnMoved(int from, int to, int count) override;
+    // Whether `c` may go on `onto` in a column: the other colour here.
+    virtual bool Builds(const Card& c, const Card& onto) const { return !onto.SameColor(c); }
 
 private:
     static constexpr int kFoundation0 = 0;   // 4 foundations

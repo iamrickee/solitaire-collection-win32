@@ -74,7 +74,7 @@ bool Yukon::CanDrop(int from, int index, int to) const {
         return dst.Top().suit == moving.suit && moving.rank == dst.Top().rank + 1;
     case PileKind::Tableau:
         if (dst.Empty()) return moving.rank == kKing;
-        return dst.Top().faceUp && !dst.Top().SameColor(moving) && moving.rank + 1 == dst.Top().rank;
+        return dst.Top().faceUp && Builds(moving, dst.Top()) && moving.rank + 1 == dst.Top().rank;
     default:
         return false;
     }
