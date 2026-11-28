@@ -84,6 +84,9 @@ protected:
     // Extra per-game state that undo must restore (e.g. stock passes).
     virtual std::vector<int> SaveExtra() const { return {}; }
     virtual void LoadExtra(const std::vector<int>& extra) { (void)extra; }
+    // Points each undo costs. Undo restores the old score, then takes this off;
+    // the charge sticks even through later undos. 0 = undo is free.
+    virtual int UndoPenalty() const { return 0; }
 
     // Snapshot state before a change. Also marks the game as started.
     void PushUndo();
@@ -100,9 +103,11 @@ private:
     struct Snapshot {
         std::vector<std::vector<Card>> cards;
         int score;
+        int penalty;   // penalty_ when the snapshot was taken
         std::vector<int> extra;
     };
     std::vector<Snapshot> undo_;
+    int penalty_ = 0;   // total undo charges this game (never restored by undo)
     uint32_t seed_ = 0;
     bool started_ = false;
     bool ended_ = false;

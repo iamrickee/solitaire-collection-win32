@@ -132,5 +132,5 @@ std::wstring Scorpion::Rules() const {
            L"• Any face-up card can move with everything on top of it, in order or not.\n"
            L"• Only a King goes into an empty column.\n"
            L"• Click the reserve to deal its 3 cards onto the first three columns.\n\n"
-           L"Score: starts at 500, −1 per move, +100 per run removed.";
+           L"Score: starts at 500, −1 per move or deal, +100 per run removed. An undo costs 1 more, and the move it takes back isn't refunded.";
 }

@@ -4,21 +4,43 @@ A collection of solitaire card games for Windows, written in C++17 against the
 Win32 API and GDI directly — no frameworks, no game engine, no third-party
 libraries.
 
-Currently included: **Klondike** (Draw 1 / Draw 3, Standard or Vegas scoring,
-optional cumulative Vegas bank). The engine is built so more games can be added
-as single source files.
+## Games
+
+| Family              | Games                                                    |
+|---------------------|----------------------------------------------------------|
+| Klondike family     | Klondike, Yukon, Russian Solitaire                       |
+| Open-board strategy | FreeCell, Baker's Dozen, Beleaguered Castle, La Belle Lucie |
+| Spider family       | Spider, Spiderette, Scorpion                             |
+| Two decks           | Forty Thieves                                            |
+| Up-or-down chains   | Golf, TriPeaks, Things                                   |
+| Pairing             | Pyramid, Kings Corners                                   |
+| Puzzles             | Gaps, Accordion                                          |
+
+**Things** is an original game: an endless Golf variant with two wild jokers,
+where clearing a board deals a fresh one and the score keeps climbing.
+
+Klondike has options for Draw 1 / Draw 3, Standard or Vegas scoring and a
+cumulative Vegas bank. Spider can be played with 1, 2 or 4 suits. Every game's
+rules and scoring are in the app under Help → How to Play (F1).
 
 ## Features
 
-- Drag-and-drop, or click a card to select it and click where it should go
+- Drag-and-drop, or click a card to select it and click where it should go.
+  Games played by clicking (Pyramid, TriPeaks, Golf, Gaps and others) turn
+  dragging off, so a slightly shaky click still counts
 - Double-click sends a card to its foundation; right-click (or F3) auto-plays
-  everything possible to the foundations
-- Unlimited undo
-- Automatic finish once every card is face up
+  everything possible to the foundations. Where it's always safe, cards go to
+  the foundations by themselves
+- Undo, except for moves that reveal a new card in Golf, TriPeaks, Things and
+  Kings Corners. In Spider, Spiderette and Scorpion each undo costs a point,
+  and the move it takes back isn't refunded
+- Automatic finish once the game is decided
 - Best score saved per game and variant
+- Numbered, reproducible deals: replay the current deal or start any deal by
+  number. FreeCell deal numbers match Microsoft FreeCell
 - Configurable background and card-back colors, optional four-color deck
-- Pixel-art cards scaled by whole numbers to fit the window; per-monitor DPI aware
-- Numbered, reproducible deals
+- Pixel-art cards scaled by whole numbers; the window sizes itself to each
+  game's layout; per-monitor DPI aware
 
 ## Requirements
 
@@ -89,10 +111,13 @@ Delete that file to reset everything.
 | Move cards                    | Drag, or click card then click target   |
 | Send card to foundation       | Double-click                            |
 | Auto-play to foundations      | Right-click or F3                       |
-| Deal from stock               | Click the stock                         |
+| Deal from stock / redeal      | Click the stock or redeal button        |
 | Undo                          | Ctrl+Z                                  |
 | New game                      | F2                                      |
+| Replay or pick a deal         | Play → Restart This Deal / New Game from Deal # |
+| Switch game                   | Games menu                              |
 | Options for the current game  | F4                                      |
+| Colors and four-color deck    | Options → Appearance                    |
 | How to play (every game)      | F1                                      |
 
 ## Architecture
@@ -111,7 +136,8 @@ src/
     Settings.*          INI-backed settings and high scores
     GameRegistry.*      list of available games (drives the Games menu)
   games/
-    Klondike.*          one file pair per game
+    Klondike.*, ...     one file pair per game (Russian Solitaire is a header
+                        that reuses Yukon)
 res/                    sprite sheet, menus, dialogs, manifest
 tools/                  script that builds res/cards.bmp from the art pack
 ```
@@ -119,6 +145,9 @@ tools/                  script that builds res/cards.bmp from the art pack
 The app knows nothing about specific games. Each game subclasses `Game`, lays
 out its piles and answers rule questions (`CanPickUp`, `CanDrop`, `Click`,
 `IsWon`, ...). Dragging, click-to-move, animation, undo and drawing are shared.
+A game can also opt out of dragging (`AllowDrag`), hide empty piles
+(`ShowSlot`), play cards to the foundations by itself (`FindAutoMove`,
+`CanAutoComplete`), and charge points for undo (`UndoPenalty`).
 
 Rendering is double-buffered GDI: each frame is drawn to an off-screen bitmap
 and copied to the window in one `BitBlt`. Cards are drawn with `TransparentBlt`
@@ -127,7 +156,8 @@ window size or appearance settings change.
 
 ### Adding a game
 
-1. Add `src/games/MyGame.h/.cpp` deriving from `Game`.
+1. Add `src/games/MyGame.h/.cpp` deriving from `Game`, including its `Rules()`
+   text for Help → How to Play.
 2. Add one line to `AllGames()` in `src/core/GameRegistry.cpp`.
 3. Add the `.cpp` to `CMakeLists.txt`.
 

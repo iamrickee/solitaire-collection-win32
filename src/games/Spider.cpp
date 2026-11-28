@@ -212,5 +212,5 @@ std::wstring Spider::Rules() const {
            L"• Any card or run can go into an empty column.\n"
            L"• Click the deck to deal one card onto every column. You can't deal while a column is empty.\n\n"
            L"Spider Options sets the difficulty: one suit, two suits or four.\n\n"
-           L"Score: starts at 500, −1 per move, +100 per run removed.";
+           L"Score: starts at 500, −1 per move or deal, +100 per run removed. An undo costs 1 more, and the move it takes back isn't refunded.";
 }

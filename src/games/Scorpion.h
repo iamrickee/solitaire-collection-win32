@@ -25,6 +25,9 @@ public:
     int DoubleClickTarget(int pile, int index) const override { (void)pile; (void)index; return -1; }
 
 protected:
+    // Undo gives back the move's point, so 2 here leaves -1 for the move it
+    // takes back and -1 for the undo itself.
+    int UndoPenalty() const override { return 2; }
     void Deal(uint32_t seed) override;
     void OnMoved(int from, int to, int count) override;
 

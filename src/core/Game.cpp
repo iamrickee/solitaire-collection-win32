@@ -3,6 +3,7 @@
 void Game::NewGame(uint32_t seed) {
     seed_ = seed;
     undo_.clear();
+    penalty_ = 0;
     started_ = false;
     ended_ = false;
     score_ = 0;
@@ -22,6 +23,7 @@ void Game::PushUndo() {
     s.cards.reserve(piles_.size());
     for (const Pile& p : piles_) s.cards.push_back(p.cards);
     s.score = score_;
+    s.penalty = penalty_;
     s.extra = SaveExtra();
     undo_.push_back(std::move(s));
     started_ = true;
@@ -31,7 +33,11 @@ bool Game::Undo() {
     if (!CanUndo()) return false;
     Snapshot& s = undo_.back();
     for (size_t i = 0; i < piles_.size(); ++i) piles_[i].cards = std::move(s.cards[i]);
-    score_ = s.score;
+    // The snapshot's score already includes the charges made before it; take
+    // off the ones since (this undo included).
+    penalty_ += UndoPenalty();
+    score_ = s.score - (penalty_ - s.penalty);
+    if (UndoPenalty() > 0 && score_ < 0) score_ = 0;   // like move costs, charges stop at 0
     LoadExtra(s.extra);
     undo_.pop_back();
     return true;

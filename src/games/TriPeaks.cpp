@@ -151,6 +151,7 @@ std::wstring TriPeaks::Rules() const {
            L"Layout: 28 cards in three overlapping peaks with the bottom row face up. One card starts the face-up pile; the rest form the deck.\n\n"
            L"• Click an uncovered card to play it onto the face-up pile if it is one rank higher or lower, in any suit. King and Ace wrap around.\n"
            L"• A card turns over once both cards covering it are gone.\n"
-           L"• When stuck, click the deck to turn up its next card. There is only one pass through the deck.\n\n"
+           L"• When stuck, click the deck to turn up its next card. There is only one pass through the deck.\n"
+           L"• A draw, or a play that turns a card over, can't be undone.\n\n"
            L"Score: each card in a run scores one more than the last (1, 2, 3...); drawing starts a new run. Clearing a peak adds 15.";
 }
