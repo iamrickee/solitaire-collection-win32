@@ -1,4 +1,5 @@
 #include "GameRegistry.h"
+#include "../games/Accordion.h"
 #include "../games/BakersDozen.h"
 #include "../games/BeleagueredCastle.h"
 #include "../games/FortyThieves.h"
@@ -25,6 +26,7 @@ const std::vector<GameInfo>& AllGames() {
     static const std::vector<GameInfo> games = {
         {L"Klondike", &Make<Klondike>},
         {L"FreeCell", &Make<FreeCell>},
+        {L"Accordion", &Make<Accordion>},
         {L"Baker's Dozen", &Make<BakersDozen>},
         {L"Beleaguered Castle", &Make<BeleagueredCastle>},
         {L"Forty Thieves", &Make<FortyThieves>},
