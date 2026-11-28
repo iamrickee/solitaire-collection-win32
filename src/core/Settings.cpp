@@ -47,11 +47,16 @@ bool Settings::FourColor() const { return GetInt(kAppSection, L"FourColor", 0) !
 void Settings::SetFourColor(bool on) { SetInt(kAppSection, L"FourColor", on ? 1 : 0); }
 
 bool Settings::SubmitScore(const std::wstring& label, int score) {
-    const int kNone = INT_MIN;
-    int best = GetInt(kScoreSection, label.c_str(), kNone);
-    if (best != kNone && score <= best) return false;
+    int best;
+    if (BestScore(label, best) && score <= best) return false;
     SetInt(kScoreSection, label.c_str(), score);
     return true;
+}
+
+bool Settings::BestScore(const std::wstring& label, int& best) const {
+    const int kNone = INT_MIN;
+    best = GetInt(kScoreSection, label.c_str(), kNone);
+    return best != kNone;
 }
 
 std::vector<std::pair<std::wstring, int>> Settings::HighScores() const {

@@ -375,17 +375,23 @@ void App::UpdateLayout() {
 
     if (status_) {
         const UINT dpi = WindowDpi(hwnd_);
-        int parts[3] = {MulDiv(260, dpi, 96), std::max(MulDiv(520, dpi, 96), int(client.right) - MulDiv(140, dpi, 96)), -1};
-        SendMessageW(status_, SB_SETPARTS, 3, reinterpret_cast<LPARAM>(parts));
+        // Game | score (stretches) | best | deal number
+        const int best = std::max(MulDiv(520, dpi, 96), int(client.right) - MulDiv(270, dpi, 96));
+        int parts[4] = {MulDiv(260, dpi, 96), best, best + MulDiv(130, dpi, 96), -1};
+        SendMessageW(status_, SB_SETPARTS, 4, reinterpret_cast<LPARAM>(parts));
     }
 }
 
 void App::UpdateStatus() {
     if (!status_ || !game_) return;
     std::wstring deal = L"Deal #" + std::to_wstring(game_->Seed());
-    SendMessageW(status_, SB_SETTEXTW, 0, reinterpret_cast<LPARAM>(game_->Label().c_str()));
+    const std::wstring label = game_->Label();   // high scores are per game and variant
+    SendMessageW(status_, SB_SETTEXTW, 0, reinterpret_cast<LPARAM>(label.c_str()));
+    int bestScore;
+    const std::wstring best = L"Best: " + (settings_.BestScore(label, bestScore) ? FormatScore(label, bestScore) : L"none");
     SendMessageW(status_, SB_SETTEXTW, 1, reinterpret_cast<LPARAM>(game_->ScoreText().c_str()));
-    SendMessageW(status_, SB_SETTEXTW, 2, reinterpret_cast<LPARAM>(deal.c_str()));
+    SendMessageW(status_, SB_SETTEXTW, 2, reinterpret_cast<LPARAM>(best.c_str()));
+    SendMessageW(status_, SB_SETTEXTW, 3, reinterpret_cast<LPARAM>(deal.c_str()));
 }
 
 void App::EnsureBackBuffer(int w, int h) {
@@ -789,6 +795,7 @@ void App::ShowSettings() {
 
 void App::ShowHighScores() {
     DialogBoxParamW(inst_, MAKEINTRESOURCEW(IDD_HIGHSCORES), hwnd_, HighScoresProc, reinterpret_cast<LPARAM>(&settings_));
+    UpdateStatus();   // Reset may have cleared the best score shown
 }
 
 namespace {

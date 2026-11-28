@@ -29,6 +29,8 @@ public:
     // High scores. `label` is a human-readable game/variant name.
     // Returns true if `score` is a new best for that label.
     bool SubmitScore(const std::wstring& label, int score);
+    // The best score for `label`; false if there isn't one yet.
+    bool BestScore(const std::wstring& label, int& best) const;
     std::vector<std::pair<std::wstring, int>> HighScores() const;
     void ClearHighScores();
 
