@@ -12,6 +12,7 @@ public:
     explicit TriPeaks(Settings& settings);
 
     std::wstring Name() const override { return L"TriPeaks"; }
+    std::wstring Rules() const override;
     std::wstring ScoreText() const override;
 
     double LayoutWidth() const override { return 11.6; }

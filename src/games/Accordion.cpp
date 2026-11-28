@@ -100,3 +100,13 @@ bool Accordion::IsLost() const {
         if (!TargetsFor(i).empty()) return false;
     return true;
 }
+
+std::wstring Accordion::Rules() const {
+    return L"Goal: gather all 52 cards into a single pile.\n\n"
+           L"Layout: every card is dealt face up in one long line, shown wrapped into rows of 13 that read left to right, top to bottom.\n\n"
+           L"• A pile can move onto the pile directly to its left, or onto the pile three places to its left, if their top cards match in suit or rank.\n"
+           L"• The whole pile moves, and the line closes up behind it.\n"
+           L"• Click a pile to move it. If it could go either way, it is selected and you click where it goes.\n\n"
+           L"The game ends when no pile can move. Finishing with only a few piles is a good result.\n\n"
+           L"Score: cards stacked (52 minus the piles left).";
+}

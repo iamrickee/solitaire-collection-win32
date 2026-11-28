@@ -22,7 +22,8 @@ private:
     // Game management
     void SelectGame(int index, uint32_t deal = 0);
     void FitWindow(bool centerOnMonitor);
-    void NewDeal(bool sameSeed);
+    // deal = 0 picks a random deal.
+    void NewDeal(uint32_t deal);
     void AfterChange();
     void FinishCurrentGame();
 
@@ -53,6 +54,10 @@ private:
     // Dialogs
     void ShowSettings();
     void ShowHighScores();
+    // Help > How to Play: every game's rules, opened on the current game.
+    void ShowRules();
+    // Asks for a deal number; 0 if cancelled.
+    uint32_t AskDealNumber();
 
     HINSTANCE inst_ = nullptr;
     HWND hwnd_ = nullptr;

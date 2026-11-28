@@ -12,6 +12,7 @@ public:
     explicit Golf(Settings& settings);
 
     std::wstring Name() const override { return L"Golf"; }
+    std::wstring Rules() const override;
     std::wstring ScoreText() const override;
 
     double LayoutWidth() const override { return 8.3; }

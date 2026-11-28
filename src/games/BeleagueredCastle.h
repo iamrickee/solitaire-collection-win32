@@ -11,6 +11,7 @@ public:
     explicit BeleagueredCastle(Settings& settings);
 
     std::wstring Name() const override { return L"Beleaguered Castle"; }
+    std::wstring Rules() const override;
 
     double LayoutWidth() const override { return 9.7; }
     double LayoutHeight() const override { return 4.4; }

@@ -8,16 +8,15 @@ IDB_CARDS BITMAP "cards.bmp"
 
 IDR_MAINMENU MENU
 BEGIN
-    POPUP "&Game"
+    POPUP "&Play"
     BEGIN
         MENUITEM "&New Game\tF2",           IDM_NEW
+        MENUITEM "New Game from &Deal #...", IDM_NEWDEAL
         MENUITEM "&Restart This Deal",      IDM_RESTART
         MENUITEM SEPARATOR
         MENUITEM "&Undo\tCtrl+Z",           IDM_UNDO
         MENUITEM "&Auto Play\tF3",          IDM_AUTOPLAY
         MENUITEM SEPARATOR
-        MENUITEM "&Options...\tF4",         IDM_OPTIONS
-        MENUITEM "&Settings...",            IDM_SETTINGS
         MENUITEM "&High Scores...",         IDM_HIGHSCORES
         MENUITEM SEPARATOR
         MENUITEM "E&xit",                   IDM_EXIT
@@ -26,14 +25,23 @@ BEGIN
     BEGIN
         MENUITEM "(none)",                  IDM_GAMES_PLACEHOLDER
     END
+    POPUP "&Options"
+    BEGIN
+        MENUITEM "&Game Options...\tF4",    IDM_OPTIONS     // renamed to the current game, e.g. "Klondike Options..."
+        MENUITEM SEPARATOR
+        MENUITEM "&Appearance...",          IDM_SETTINGS    // applies to every game
+    END
     POPUP "&Help"
     BEGIN
+        MENUITEM "&How to Play...\tF1",   IDM_RULES
+        MENUITEM SEPARATOR
         MENUITEM "&About Solitaire...",     IDM_ABOUT
     END
 END
 
 IDR_ACCEL ACCELERATORS
 BEGIN
+    VK_F1,  IDM_RULES,    VIRTKEY
     VK_F2,  IDM_NEW,      VIRTKEY
     VK_F3,  IDM_AUTOPLAY, VIRTKEY
     VK_F4,  IDM_OPTIONS,  VIRTKEY
@@ -53,7 +61,7 @@ END
 
 IDD_SETTINGS DIALOGEX 0, 0, 200, 112
 STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
-CAPTION "Settings"
+CAPTION "Appearance"
 FONT 9, "Segoe UI"
 BEGIN
     LTEXT           "Background color:", -1, 10, 12, 80, 10
@@ -108,4 +116,26 @@ BEGIN
     LTEXT           "Changing options starts a new game.", -1, 10, 70, 142, 10
     DEFPUSHBUTTON   "OK", IDOK, 48, 84, 50, 14
     PUSHBUTTON      "Cancel", IDCANCEL, 102, 84, 50, 14
+END
+
+IDD_DEAL DIALOGEX 0, 0, 170, 80
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "New Game from Deal #"
+FONT 9, "Segoe UI"
+BEGIN
+    LTEXT           "&Deal number:", -1, 10, 12, 50, 10
+    EDITTEXT        IDC_DEAL_NUMBER, 62, 10, 98, 13, ES_NUMBER | ES_AUTOHSCROLL
+    LTEXT           "Any number from 1 to 4294967295.\nThe current deal # is in the status bar.", -1, 10, 30, 150, 20
+    DEFPUSHBUTTON   "OK", IDOK, 56, 58, 50, 14
+    PUSHBUTTON      "Cancel", IDCANCEL, 110, 58, 50, 14
+END
+
+IDD_RULES DIALOGEX 0, 0, 380, 232
+STYLE DS_MODALFRAME | DS_CENTER | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "How to Play"
+FONT 9, "Segoe UI"
+BEGIN
+    LISTBOX         IDC_RULES_GAMES, 8, 8, 92, 196, LBS_NOTIFY | LBS_NOINTEGRALHEIGHT | WS_VSCROLL | WS_BORDER | WS_TABSTOP
+    EDITTEXT        IDC_RULES_TEXT, 108, 8, 264, 196, ES_MULTILINE | ES_READONLY | WS_VSCROLL | WS_TABSTOP
+    DEFPUSHBUTTON   "OK", IDOK, 322, 212, 50, 14
 END

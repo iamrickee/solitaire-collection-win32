@@ -9,6 +9,7 @@ public:
     explicit Things(Settings& settings);
 
     std::wstring Name() const override { return L"Things"; }
+    std::wstring Rules() const override;
     std::wstring ScoreText() const override;
 
     double LayoutWidth() const override { return 9.4; }

@@ -137,3 +137,14 @@ std::wstring LaBelleLucie::SlotHint(int pile) const {
     if (pile == kRedeal && !Ended()) return redeals_ < kMaxRedeals ? L"↻" : L"✕";   // ↻ or ✕
     return piles_[pile].kind == PileKind::Foundation ? L"A" : std::wstring{};
 }
+
+std::wstring LaBelleLucie::Rules() const {
+    return L"Goal: move all 52 cards to the four foundations, building each up in one suit from Ace to King.\n\n"
+           L"Layout: 17 fans of three face-up cards and one single card.\n\n"
+           L"• Only the top card of a fan can move.\n"
+           L"• Build fans down in suit, one card at a time.\n"
+           L"• An empty fan stays empty.\n"
+           L"• Cards go to the foundations by themselves.\n"
+           L"• When stuck, click the redeal button: the fans are gathered, shuffled and dealt again in threes. You get two redeals.\n\n"
+           L"Score: cards on the foundations.";
+}

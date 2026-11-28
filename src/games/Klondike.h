@@ -7,6 +7,7 @@ public:
     explicit Klondike(Settings& settings);
 
     std::wstring Name() const override { return L"Klondike"; }
+    std::wstring Rules() const override;
     std::wstring Label() const override;
     std::wstring ScoreText() const override;
 

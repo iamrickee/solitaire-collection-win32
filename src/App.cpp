@@ -240,10 +240,16 @@ void App::OnCommand(int id) {
     }
     switch (id) {
     case IDM_NEW:
-        if (!Busy()) NewDeal(false);
+        if (!Busy()) NewDeal(0);
+        break;
+    case IDM_NEWDEAL:
+        if (!Busy()) {
+            const uint32_t deal = AskDealNumber();
+            if (deal) NewDeal(deal);
+        }
         break;
     case IDM_RESTART:
-        if (!Busy()) NewDeal(true);
+        if (!Busy()) NewDeal(game_->Seed());
         break;
     case IDM_UNDO:
         if (!Busy() && !lifted_.active && game_->Undo()) {
@@ -258,7 +264,7 @@ void App::OnCommand(int id) {
         break;
     }
     case IDM_OPTIONS:
-        if (!Busy() && game_->HasOptions() && game_->ShowOptions(hwnd_)) NewDeal(false);
+        if (!Busy() && game_->HasOptions() && game_->ShowOptions(hwnd_)) NewDeal(0);
         UpdateStatus();
         break;
     case IDM_SETTINGS:
@@ -266,6 +272,9 @@ void App::OnCommand(int id) {
         break;
     case IDM_HIGHSCORES:
         ShowHighScores();
+        break;
+    case IDM_RULES:
+        ShowRules();
         break;
     case IDM_ABOUT:
         DialogBoxW(inst_, MAKEINTRESOURCEW(IDD_ABOUT), hwnd_,
@@ -299,17 +308,20 @@ void App::SelectGame(int index, uint32_t deal) {
     game_ = info.create(settings_);
     settings_.SetString(L"App", L"Game", info.name);
     game_->NewGame(deal ? deal : RandomDeal());
+    // The game-options item names the current game.
+    const std::wstring options = game_->Name() + L" &Options...\tF4";
+    ModifyMenuW(GetMenu(hwnd_), IDM_OPTIONS, MF_BYCOMMAND | MF_STRING, IDM_OPTIONS, options.c_str());
     UpdateLayout();
     UpdateStatus();
     InvalidateRect(hwnd_, nullptr, FALSE);
 }
 
-void App::NewDeal(bool sameSeed) {
+void App::NewDeal(uint32_t deal) {
     FinishCurrentGame();
     lifted_ = {};
     press_ = {};
     sel_ = {};
-    game_->NewGame(sameSeed ? game_->Seed() : RandomDeal());
+    game_->NewGame(deal ? deal : RandomDeal());
     UpdateLayout();
     UpdateStatus();
     InvalidateRect(hwnd_, nullptr, FALSE);
@@ -330,7 +342,7 @@ void App::AfterChange() {
         if (best) text += L"\nNew high score!";
         text += L"\n\nDeal again?";
         if (MessageBoxW(hwnd_, text.c_str(), game_->Name().c_str(), MB_YESNO | MB_ICONINFORMATION) == IDYES)
-            NewDeal(false);
+            NewDeal(0);
         return;
     }
 
@@ -777,4 +789,103 @@ void App::ShowSettings() {
 
 void App::ShowHighScores() {
     DialogBoxParamW(inst_, MAKEINTRESOURCEW(IDD_HIGHSCORES), hwnd_, HighScoresProc, reinterpret_cast<LPARAM>(&settings_));
+}
+
+namespace {
+INT_PTR CALLBACK DealProc(HWND dlg, UINT msg, WPARAM wp, LPARAM lp) {
+    switch (msg) {
+    case WM_INITDIALOG: {
+        SetWindowLongPtrW(dlg, DWLP_USER, lp);
+        const HWND edit = GetDlgItem(dlg, IDC_DEAL_NUMBER);
+        SendMessageW(edit, EM_LIMITTEXT, 10, 0);   // up to 4294967295
+        SetWindowTextW(edit, std::to_wstring(*reinterpret_cast<uint32_t*>(lp)).c_str());
+        SendMessageW(edit, EM_SETSEL, 0, -1);
+        SetFocus(edit);
+        return FALSE;   // focus set by hand
+    }
+    case WM_COMMAND:
+        switch (LOWORD(wp)) {
+        case IDOK: {
+            wchar_t text[16] = {};
+            GetDlgItemTextW(dlg, IDC_DEAL_NUMBER, text, 16);
+            const unsigned long long n = wcstoull(text, nullptr, 10);
+            if (n < 1 || n > 0xFFFFFFFFull) {
+                MessageBoxW(dlg, L"Enter a deal number from 1 to 4294967295.", L"New Game from Deal #", MB_OK | MB_ICONWARNING);
+                SetFocus(GetDlgItem(dlg, IDC_DEAL_NUMBER));
+                SendDlgItemMessageW(dlg, IDC_DEAL_NUMBER, EM_SETSEL, 0, -1);
+                return TRUE;
+            }
+            *reinterpret_cast<uint32_t*>(GetWindowLongPtrW(dlg, DWLP_USER)) = static_cast<uint32_t>(n);
+            EndDialog(dlg, IDOK);
+            return TRUE;
+        }
+        case IDCANCEL:
+            EndDialog(dlg, IDCANCEL);
+            return TRUE;
+        }
+        break;
+    }
+    return FALSE;
+}
+}
+
+namespace {
+struct RulesData {
+    Settings* settings;
+    int index;   // game shown first
+};
+
+void ShowRulesFor(HWND dlg, Settings& settings, int index) {
+    // A throwaway instance (never dealt) just to ask for its rules.
+    const std::wstring rules = AllGames()[index].create(settings)->Rules();
+    std::wstring text;   // the edit control wants \r\n line breaks
+    for (wchar_t c : rules) {
+        if (c == L'\n') text += L'\r';
+        text += c;
+    }
+    SetDlgItemTextW(dlg, IDC_RULES_TEXT, text.c_str());
+}
+
+INT_PTR CALLBACK RulesProc(HWND dlg, UINT msg, WPARAM wp, LPARAM lp) {
+    switch (msg) {
+    case WM_INITDIALOG: {
+        SetWindowLongPtrW(dlg, DWLP_USER, lp);
+        const auto* d = reinterpret_cast<RulesData*>(lp);
+        const HWND list = GetDlgItem(dlg, IDC_RULES_GAMES);
+        for (const GameInfo& g : AllGames()) SendMessageW(list, LB_ADDSTRING, 0, reinterpret_cast<LPARAM>(g.name));
+        SendMessageW(list, LB_SETCURSEL, d->index, 0);
+        ShowRulesFor(dlg, *d->settings, d->index);
+        SetFocus(list);
+        return FALSE;   // focus set by hand
+    }
+    case WM_COMMAND:
+        switch (LOWORD(wp)) {
+        case IDC_RULES_GAMES:
+            if (HIWORD(wp) == LBN_SELCHANGE) {
+                const auto* d = reinterpret_cast<RulesData*>(GetWindowLongPtrW(dlg, DWLP_USER));
+                const int sel = static_cast<int>(SendDlgItemMessageW(dlg, IDC_RULES_GAMES, LB_GETCURSEL, 0, 0));
+                if (sel >= 0) ShowRulesFor(dlg, *d->settings, sel);
+            }
+            return TRUE;
+        case IDOK:
+        case IDCANCEL:
+            EndDialog(dlg, IDOK);
+            return TRUE;
+        }
+        break;
+    }
+    return FALSE;
+}
+}
+
+void App::ShowRules() {
+    RulesData d{&settings_, gameIndex_};
+    DialogBoxParamW(inst_, MAKEINTRESOURCEW(IDD_RULES), hwnd_, RulesProc, reinterpret_cast<LPARAM>(&d));
+}
+
+uint32_t App::AskDealNumber() {
+    uint32_t deal = game_->Seed();
+    if (DialogBoxParamW(inst_, MAKEINTRESOURCEW(IDD_DEAL), hwnd_, DealProc, reinterpret_cast<LPARAM>(&deal)) != IDOK)
+        return 0;
+    return deal;
 }

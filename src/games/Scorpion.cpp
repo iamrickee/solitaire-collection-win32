@@ -124,3 +124,13 @@ bool Scorpion::IsWon() const {
         if (piles_[kFoundation0 + i].Empty()) return false;
     return true;
 }
+
+std::wstring Scorpion::Rules() const {
+    return L"Goal: build four runs from King down to Ace, each in one suit. A finished run is removed to a foundation.\n\n"
+           L"Layout: 7 columns of 7 cards; the first four columns have their first 3 cards face down. The last 3 cards are held in reserve.\n\n"
+           L"• Build down in suit.\n"
+           L"• Any face-up card can move with everything on top of it, in order or not.\n"
+           L"• Only a King goes into an empty column.\n"
+           L"• Click the reserve to deal its 3 cards onto the first three columns.\n\n"
+           L"Score: starts at 500, −1 per move, +100 per run removed.";
+}

@@ -14,6 +14,7 @@ public:
     explicit Gaps(Settings& settings);
 
     std::wstring Name() const override { return L"Gaps"; }
+    std::wstring Rules() const override;
     std::wstring ScoreText() const override;
 
     double LayoutWidth() const override { return 11.2; }

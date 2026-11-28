@@ -185,3 +185,13 @@ std::wstring KingsCorners::SlotHint(int pile) const {
     default: return {};
     }
 }
+
+std::wstring KingsCorners::Rules() const {
+    return L"Goal: get all twelve face cards into their homes in a 4×4 grid.\n\n"
+           L"• Kings go in the corners, Queens in the middle of the top and bottom rows, and Jacks in the middle of the side columns. A face card sits face down once it is home.\n"
+           L"• Cards come from the deck one at a time. Click a cell to place the card: number cards can go in any empty cell.\n"
+           L"• When the grid is full, remove number cards in pairs that add up to 10 (Ace counts 1). A 10 is removed on its own.\n"
+           L"• Then click the deck to fill the empty cells again.\n\n"
+           L"You lose when a face card has nowhere to go, or the grid is full with nothing to remove.\n\n"
+           L"Score: +1 per face card home and +1 per card removed.";
+}

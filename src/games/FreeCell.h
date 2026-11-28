@@ -11,6 +11,7 @@ public:
     explicit FreeCell(Settings& settings);
 
     std::wstring Name() const override { return L"FreeCell"; }
+    std::wstring Rules() const override;
 
     double LayoutWidth() const override { return 9.4; }
     double LayoutHeight() const override { return 4.4; }

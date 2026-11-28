@@ -115,3 +115,12 @@ bool BeleagueredCastle::IsLost() const {
     }
     return true;
 }
+
+std::wstring BeleagueredCastle::Rules() const {
+    return L"Goal: build the four foundations up in suit from Ace to King.\n\n"
+           L"Layout: the Aces start on the foundations in the middle. The other 48 cards are dealt face up into 8 rows of 6, four rows on each side. There is no deck.\n\n"
+           L"• Build rows down regardless of suit, one card at a time. Only the outer card of a row can move.\n"
+           L"• Any card can go into an empty row.\n"
+           L"• Cards go to the foundations by themselves once no row could need them.\n\n"
+           L"Score: cards moved to the foundations.";
+}

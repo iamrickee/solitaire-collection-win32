@@ -145,3 +145,13 @@ std::wstring FortyThieves::SlotHint(int pile) const {
     if (pile == kStock && !Ended() && !piles_[kWaste].Empty()) return L"✕";   // ✕: no redeal
     return piles_[pile].kind == PileKind::Foundation ? L"A" : std::wstring{};
 }
+
+std::wstring FortyThieves::Rules() const {
+    return L"Goal: move all 104 cards (two decks) to the eight foundations, building each up in one suit from Ace to King.\n\n"
+           L"Layout: 10 columns of 4 face-up cards. The rest of the cards form the deck.\n\n"
+           L"• Build columns down in suit, one card at a time.\n"
+           L"• Any card can go into an empty column.\n"
+           L"• Click the deck to turn one card onto the waste; the top waste card can be played. There is only one pass through the deck.\n"
+           L"• Cards go to the foundations by themselves once no column could need them.\n\n"
+           L"Score: cards on the foundations.";
+}

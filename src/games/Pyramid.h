@@ -11,6 +11,7 @@ public:
     explicit Pyramid(Settings& settings);
 
     std::wstring Name() const override { return L"Pyramid"; }
+    std::wstring Rules() const override;
     std::wstring ScoreText() const override;
 
     double LayoutWidth() const override { return 8.2; }

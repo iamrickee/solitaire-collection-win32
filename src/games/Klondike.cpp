@@ -293,3 +293,15 @@ bool Klondike::ShowOptions(HWND owner) {
     // Options take effect on the next deal (Deal() reloads them).
     return changed;
 }
+
+std::wstring Klondike::Rules() const {
+    return L"Goal: move all 52 cards to the four foundations, building each up in one suit from Ace to King.\n\n"
+           L"Layout: 7 columns of 1 to 7 cards with the top card face up. The rest of the cards form the deck.\n\n"
+           L"• Build columns down in alternating colors (a red 6 on a black 7). An ordered run moves as a unit.\n"
+           L"• Only a King, or a run starting with one, goes into an empty column.\n"
+           L"• A face-down card turns over when it is uncovered.\n"
+           L"• Click the deck to turn 1 or 3 cards onto the waste; the top waste card can be played. Click the empty deck to turn the waste over again.\n\n"
+           L"Standard scoring: +10 per card to a foundation, +5 waste to column, +5 for turning a card over, −15 for taking a card back off a foundation, and −100 per pass through the deck (−20 when drawing three). Unlimited passes.\n\n"
+           L"Vegas scoring: you pay $52 to start and win $5 for every card on the foundations. One pass when drawing one, three when drawing three. The cumulative bank carries your total from game to game.\n\n"
+           L"Draw count and scoring are in Klondike Options.";
+}

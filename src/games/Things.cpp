@@ -138,3 +138,13 @@ bool Things::IsLost() const {
     }
     return true;
 }
+
+std::wstring Things::Rules() const {
+    return L"Goal: score as much as you can. Things never ends in a win: clearing a board deals a fresh one, and the game ends when you're stuck.\n\n"
+           L"Layout: 54 cards, including two jokers. 8 columns of 5 face-up cards, one card face up to start the pile, and 13 in the deck.\n\n"
+           L"• Click the bottom card of a column to play it onto the face-up pile if it is one rank higher or lower, in any suit. Aces and Kings don't wrap.\n"
+           L"• Jokers are wild: a joker plays on anything, and anything plays on a joker.\n"
+           L"• Click the deck to turn up its next card. A draw can't be undone.\n"
+           L"• Clear all 8 columns to get a new board from a full new deck.\n\n"
+           L"Score: each card in a run scores one more than the last (1, 2, 3...); drawing starts a new run. Clearing board N adds N×100, plus 10 for each card left in the deck.";
+}

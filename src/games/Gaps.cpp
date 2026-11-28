@@ -155,3 +155,14 @@ std::wstring Gaps::SlotHint(int pile) const {
     if (pile == kRedeal && !Ended()) return redeals_ < kMaxRedeals ? L"↻" : L"✕";   // ↻ or ✕
     return {};
 }
+
+std::wstring Gaps::Rules() const {
+    return L"Goal: make each row run from 2 to King in one suit, with the gap at the end.\n\n"
+           L"Layout: all 52 cards are dealt face up in 4 rows of 13, then the Aces are taken out, leaving four gaps.\n\n"
+           L"• Fill a gap with the card one rank higher, in the same suit, than the card to its left.\n"
+           L"• A gap at the start of a row takes any 2.\n"
+           L"• A gap after a King can't be filled.\n"
+           L"• Click a card to move it into its gap, or click a gap to pull in the card that fits.\n"
+           L"• When stuck, click the redeal button: every card not yet in sequence is shuffled and dealt again, with a gap right after each row's sequence. You get two redeals.\n\n"
+           L"Score: cards in sequence.";
+}

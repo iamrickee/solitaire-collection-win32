@@ -127,3 +127,12 @@ bool BakersDozen::IsLost() const {
 std::wstring BakersDozen::SlotHint(int pile) const {
     return piles_[pile].kind == PileKind::Foundation ? L"A" : std::wstring{};
 }
+
+std::wstring BakersDozen::Rules() const {
+    return L"Goal: move all 52 cards to the four foundations, building each up in one suit from Ace to King.\n\n"
+           L"Layout: 13 columns of 4 face-up cards. Any King is moved to the bottom of its column. There is no deck.\n\n"
+           L"• Build columns down regardless of suit, one card at a time.\n"
+           L"• An empty column stays empty.\n"
+           L"• Cards go to the foundations by themselves once no column could need them.\n\n"
+           L"Score: cards on the foundations.";
+}

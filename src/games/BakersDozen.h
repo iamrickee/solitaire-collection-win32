@@ -10,6 +10,7 @@ public:
     explicit BakersDozen(Settings& settings);
 
     std::wstring Name() const override { return L"Baker's Dozen"; }
+    std::wstring Rules() const override;
 
     double LayoutWidth() const override { return 10.8; }
     double LayoutHeight() const override { return 4.4; }

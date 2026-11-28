@@ -18,6 +18,8 @@ public:
     virtual std::wstring Label() const { return Name(); }
     // Status-bar score text.
     virtual std::wstring ScoreText() const { return L"Score: " + std::to_wstring(score_); }
+    // How to play, shown under Help. Paragraphs separated by blank lines.
+    virtual std::wstring Rules() const = 0;
 
     // ---- Lifecycle --------------------------------------------------------
     void NewGame(uint32_t seed);

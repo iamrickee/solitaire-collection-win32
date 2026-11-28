@@ -8,6 +8,7 @@ public:
     using Yukon::Yukon;
 
     std::wstring Name() const override { return L"Russian Solitaire"; }
+    std::wstring Rules() const override;   // in Yukon.cpp
 
 protected:
     bool Builds(const Card& c, const Card& onto) const override { return c.suit == onto.suit; }

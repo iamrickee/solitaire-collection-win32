@@ -204,3 +204,13 @@ bool Spider::ShowOptions(HWND owner) {
     settings_.SetInt(kSection, L"Suits", suits);
     return suits != suits_;   // takes effect on the next deal
 }
+
+std::wstring Spider::Rules() const {
+    return L"Goal: build eight runs from King down to Ace, each in one suit. A finished run is removed to a foundation.\n\n"
+           L"Layout: 104 cards (two decks) with 54 dealt into 10 columns, top card face up. The other 50 form the deck.\n\n"
+           L"• Build down regardless of suit, but only a run of one suit can move as a unit.\n"
+           L"• Any card or run can go into an empty column.\n"
+           L"• Click the deck to deal one card onto every column. You can't deal while a column is empty.\n\n"
+           L"Spider Options sets the difficulty: one suit, two suits or four.\n\n"
+           L"Score: starts at 500, −1 per move, +100 per run removed.";
+}

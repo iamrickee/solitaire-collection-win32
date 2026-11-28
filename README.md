@@ -92,7 +92,8 @@ Delete that file to reset everything.
 | Deal from stock               | Click the stock                         |
 | Undo                          | Ctrl+Z                                  |
 | New game                      | F2                                      |
-| Game options                  | F4                                      |
+| Options for the current game  | F4                                      |
+| How to play (every game)      | F1                                      |
 
 ## Architecture
 

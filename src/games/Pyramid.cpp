@@ -148,3 +148,13 @@ std::wstring Pyramid::SlotHint(int pile) const {
         return CanRecycle() ? L"↻" : L"✕";   // ↻ or ✕
     return {};
 }
+
+std::wstring Pyramid::Rules() const {
+    return L"Goal: clear all 28 cards from the pyramid.\n\n"
+           L"Layout: 28 face-up cards in a pyramid of 7 rows, each row overlapping the one above. The rest form the deck.\n\n"
+           L"• Remove pairs of uncovered cards that add up to 13. Jacks count 11, Queens 12 and Aces 1. Click one card, then its partner.\n"
+           L"• A King is removed on its own with one click.\n"
+           L"• The top card of the waste can pair with a pyramid card.\n"
+           L"• Click the deck to turn one card onto the waste. You can go through the deck three times.\n\n"
+           L"Score: cards removed.";
+}

@@ -12,6 +12,7 @@ public:
     explicit Accordion(Settings& settings);
 
     std::wstring Name() const override { return L"Accordion"; }
+    std::wstring Rules() const override;
     std::wstring ScoreText() const override;
 
     double LayoutWidth() const override { return 10.4; }

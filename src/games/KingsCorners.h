@@ -12,6 +12,7 @@ public:
     explicit KingsCorners(Settings& settings);
 
     std::wstring Name() const override { return L"Kings Corners"; }
+    std::wstring Rules() const override;
     std::wstring ScoreText() const override;
 
     double LayoutWidth() const override { return 7.6; }

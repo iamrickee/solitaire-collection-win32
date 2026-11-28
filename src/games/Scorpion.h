@@ -12,6 +12,7 @@ public:
     explicit Scorpion(Settings& settings);
 
     std::wstring Name() const override { return L"Scorpion"; }
+    std::wstring Rules() const override;
 
     double LayoutWidth() const override { return 8.2; }
     double LayoutHeight() const override { return 4.4; }

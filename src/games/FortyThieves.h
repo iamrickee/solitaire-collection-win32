@@ -11,6 +11,7 @@ public:
     explicit FortyThieves(Settings& settings);
 
     std::wstring Name() const override { return L"Forty Thieves"; }
+    std::wstring Rules() const override;
 
     double LayoutWidth() const override { return 11.6; }
     double LayoutHeight() const override { return 4.4; }

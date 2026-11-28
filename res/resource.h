@@ -10,6 +10,8 @@
 #define IDD_ABOUT               200
 #define IDD_SETTINGS            201
 #define IDD_HIGHSCORES          202
+#define IDD_DEAL                203
+#define IDD_RULES               204
 #define IDD_KLONDIKE_OPTIONS    210
 #define IDD_SPIDER_OPTIONS      211
 
@@ -24,6 +26,13 @@
 // High scores dialog controls
 #define IDC_SCORELIST           1101
 #define IDC_SCORERESET          1102
+
+// Deal number dialog controls
+#define IDC_DEAL_NUMBER         1401
+
+// How to Play dialog controls
+#define IDC_RULES_GAMES         1501
+#define IDC_RULES_TEXT          1502
 
 // Klondike options controls
 #define IDC_KL_DRAW1            1201
@@ -48,4 +57,6 @@
 #define IDM_EXIT                40008
 #define IDM_ABOUT               40009
 #define IDM_GAMES_PLACEHOLDER   40010
+#define IDM_NEWDEAL             40011
+#define IDM_RULES               40012
 #define IDM_GAME_FIRST          41000   // 41000 + index into AllGames()

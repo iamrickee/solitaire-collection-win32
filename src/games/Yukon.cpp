@@ -1,4 +1,5 @@
 #include "Yukon.h"
+#include "RussianSolitaire.h"
 #include "../core/Deck.h"
 #include <algorithm>
 
@@ -109,4 +110,24 @@ bool Yukon::CanAutoComplete() const {
 
 std::wstring Yukon::SlotHint(int pile) const {
     return piles_[pile].kind == PileKind::Foundation ? L"A" : std::wstring{};
+}
+
+std::wstring Yukon::Rules() const {
+    return L"Goal: move all 52 cards to the four foundations, building each up in one suit from Ace to King.\n\n"
+           L"Layout: Klondike's columns with no deck: every card is dealt. The first column has one card; each of the others has face-down cards topped by five face-up ones.\n\n"
+           L"• Build down in alternating colors.\n"
+           L"• Any face-up card can move with everything on top of it, in order or not, as long as the card you move fits where it lands.\n"
+           L"• Only a King goes into an empty column.\n"
+           L"• A face-down card turns over when it is uncovered.\n\n"
+           L"Score: as in Klondike: +10 per card to a foundation, +5 for turning a card over, −15 for taking a card back off a foundation.";
+}
+
+std::wstring RussianSolitaire::Rules() const {
+    return L"Goal: move all 52 cards to the four foundations, building each up in one suit from Ace to King.\n\n"
+           L"Layout: the same as Yukon. The first column has one card; each of the others has face-down cards topped by five face-up ones.\n\n"
+           L"• Build down in suit, where Yukon builds in alternating colors. This makes it much harder.\n"
+           L"• Any face-up card can move with everything on top of it, in order or not, as long as the card you move fits where it lands.\n"
+           L"• Only a King goes into an empty column.\n"
+           L"• A face-down card turns over when it is uncovered.\n\n"
+           L"Score: as in Klondike: +10 per card to a foundation, +5 for turning a card over, −15 for taking a card back off a foundation.";
 }

@@ -117,3 +117,13 @@ bool Golf::IsLost() const {
     }
     return true;
 }
+
+std::wstring Golf::Rules() const {
+    return L"Goal: clear all 35 cards from the columns.\n\n"
+           L"Layout: 7 columns of 5 face-up cards. One card starts the face-up pile; the other 16 form the deck.\n\n"
+           L"• Click the bottom card of a column to play it onto the face-up pile if it is one rank higher or lower, in any suit.\n"
+           L"• Aces and Kings don't wrap, and nothing can be played on a King.\n"
+           L"• Click the deck to turn up its next card. There is only one pass through the deck, and a draw can't be undone.\n\n"
+           L"Strokes, as in golf: the cards left in the columns, or minus the cards left in the deck if you clear them. Lower is better.\n\n"
+           L"Score: 35 minus strokes.";
+}

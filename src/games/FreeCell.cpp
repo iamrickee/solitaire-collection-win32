@@ -176,3 +176,14 @@ bool FreeCell::IsLost() const {
 std::wstring FreeCell::SlotHint(int pile) const {
     return piles_[pile].kind == PileKind::Foundation ? L"A" : std::wstring{};
 }
+
+std::wstring FreeCell::Rules() const {
+    return L"Goal: move all 52 cards to the four foundations, building each up in one suit from Ace to King.\n\n"
+           L"Layout: every card is dealt face up into 8 columns. Above them are 4 free cells and the 4 foundations.\n\n"
+           L"• Build columns down in alternating colors.\n"
+           L"• Each free cell holds any one card.\n"
+           L"• Any card or run can go into an empty column.\n"
+           L"• A run moves as a unit when there are enough free cells and empty columns to move it one card at a time.\n\n"
+           L"Nearly every deal can be won. Deal numbers match Microsoft FreeCell, so deal #11982 is the famous unwinnable one.\n\n"
+           L"Score: cards on the foundations.";
+}
